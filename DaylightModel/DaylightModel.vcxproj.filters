@@ -32,7 +32,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="EngineClass.h" />
     <ClInclude Include="loader_interface.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -61,6 +60,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffersFormat.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SunPosition.h">
+      <Filter>Source Files\HosekModelFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineClass.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -105,6 +110,9 @@
       <Filter>Source Files\HosekModelFiles</Filter>
     </ClCompile>
     <ClCompile Include="HosekSkylightModel\HosekSkyDome.cpp">
+      <Filter>Source Files\HosekModelFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SunPosition.cpp">
       <Filter>Source Files\HosekModelFiles</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,6 +6,10 @@ EngineClass::EngineClass()
 {
 	models_manager = new ModelsManager;
 	sky_dome = new HosekSkyDome( models_manager );
+
+	vertical_angle = 0.0;
+	horizontal_angle = 0.0;
+	mouse_button = false;
 }
 
 
@@ -116,6 +120,34 @@ void EngineClass::render_frame()
 
 	end_scene_and_present();
 }
+
+
+LRESULT EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+{
+	if ( (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK) )
+	{
+		last_mouseX = (short)LOWORD( lParam );
+		last_mouseY = (short)HIWORD( lParam );
+		mouse_button = true;
+	}
+	else if ( (uMsg == WM_LBUTTONUP) )
+	{
+		mouse_button = false;
+	}
+	else if ( uMsg == WM_MOUSEMOVE )
+	{
+		int iMouseX = (short)LOWORD( lParam );
+		int iMouseY = (short)HIWORD( lParam );
+
+
+	}
+}
+
+
+
+
+
+
 
 
 

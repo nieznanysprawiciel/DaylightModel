@@ -147,6 +147,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	HDC hdc;
 
+	engine.HandleMessages( hWnd, message, wParam, lParam );
+
 	switch (message)
 	{
 	case WM_COMMAND:

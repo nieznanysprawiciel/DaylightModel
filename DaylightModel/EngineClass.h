@@ -8,6 +8,14 @@
 class EngineClass : public DX11_constant_buffers_container
 {
 private:
+	// Widok
+	float vertical_angle;
+	float horizontal_angle;
+	int last_mouseX;
+	int last_mouseY;
+	bool mouse_button;
+
+	//
 	ModelsManager* models_manager;
 	HosekSkyDome* sky_dome;
 
@@ -26,6 +34,6 @@ public:
 	DX11_INIT_RESULT init_all( HWND window, unsigned int width, unsigned int height );
 	void render_frame();
 
-
+	LRESULT HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 };
 

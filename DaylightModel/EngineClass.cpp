@@ -28,7 +28,7 @@ EngineClass::EngineClass()
 
 	latitude = 53.0f;
 	longitude = 0.0f;
-	time = 830.0f;
+	time = 21420.0f;
 
 	albedo[0] = 0.8;
 	albedo[1] = 0.8;
@@ -57,7 +57,7 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 {
 	DX11_INIT_RESULT result;
 
-	std::wstring shader_file = L"HosekSkyDome.fx";
+	std::wstring shader_file = L"shaders/HosekSkyDome.fx";
 	std::string pixel_shader_name = "pixel_shader";
 	std::string vertex_shader_name = "vertex_shader";
 

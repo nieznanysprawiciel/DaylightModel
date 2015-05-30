@@ -1,7 +1,7 @@
 #include "SunPosition.h"
 
 const float earth_axis_to_ecliptik = DirectX::XMConvertToRadians( 23.4393f );
-const double day_length = 3364.098903691;				///< D³ugoœæ jednego dnia w sekundach (wzglêdem gwiazd).
+const double day_length = 86164.098903691;				///< D³ugoœæ jednego dnia w sekundach (wzglêdem gwiazd).
 const double year_length = 365.256 * 24 * 60 * 60;		///< D³ugoœc roku w sekundach.
 
 

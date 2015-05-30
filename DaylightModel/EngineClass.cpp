@@ -1,20 +1,53 @@
 #include "stdafx.h"
 #include "EngineClass.h"
+#include <thread>
+
+
+extern unsigned int windowX;
+extern unsigned int windowY;
+
+
+void skyThreadFunction( EngineClass* engine )
+{
+	engine->updateSky();
+}
 
 
 EngineClass::EngineClass()
 {
 	models_manager = new ModelsManager;
 	sky_dome = new HosekSkyDome( models_manager );
+	sun_position = new SunPosition;
 
 	vertical_angle = 0.0;
 	horizontal_angle = 0.0;
 	mouse_button = false;
+	horizontal_multiplier = 3.0f;
+	vertical_multiplier = 3.0f;
+
+
+	latitude = 53.0f;
+	longitude = 0.0f;
+	time = 830.0f;
+
+	albedo[0] = 0.8;
+	albedo[1] = 0.8;
+	albedo[2] = 0.8;
+	turbidity = 4.0;
+
+	sky_intensity = 5.0f;
+	sun_intensity = 5.0f;
+
+	endThread = false;
+
+	rate = 60;		// W ka¿d¹ sekundê czasu rzeczywistego mija 60 sekund.
+	time_manager.initTimer();
 }
 
 
 EngineClass::~EngineClass()
 {
+	delete sun_position;
 	delete sky_dome;
 	delete models_manager;
 	release_DirectX();
@@ -41,10 +74,13 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 						   (float)width / (float)height, 1, 100000 );
 	device_context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	double albedo[3] = { 0.8, 0.8, 0.8 };
-	double turbidity = 5;
-	DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
-	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 100, 5.0 );
+
+	//DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
+	sun_position->setSunConditions( DirectX::XMConvertToRadians( latitude ), DirectX::XMConvertToRadians( longitude ), time );
+	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
+	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 100, sky_intensity );
+
+	skyThread = std::thread( skyThreadFunction, this );
 
 	return result;
 }
@@ -77,17 +113,12 @@ void EngineClass::render_frame()
 
 	ModelPart* model = sky_dome->get_model_part();
 
-	//// Wyliczamy macierz transformacji
-	//XMVECTOR quaternion = current_camera->get_interpolated_orientation( time_lag );
-	//inverse_camera_orientation( quaternion );
 
-	XMVECTOR quaternion = XMQuaternionIdentity();
-
-	XMMATRIX rotation_matrix = XMMatrixRotationQuaternion( quaternion );
+	XMMATRIX rotation_matrix = getRotationMatrix();
 
 	// Wype³niamy bufor sta³ych
 	ConstantPerMesh shader_data_per_mesh;
-	shader_data_per_mesh.world_matrix = XMMatrixTranspose( rotation_matrix );	// Transformacja wierzcho³ków
+	shader_data_per_mesh.world_matrix = rotation_matrix;// XMMatrixTranspose( rotation_matrix );	// Transformacja wierzcho³ków
 	// Przepisujemy materia³
 	copy_material( &shader_data_per_mesh, model );
 
@@ -122,12 +153,12 @@ void EngineClass::render_frame()
 }
 
 
-LRESULT EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
+void EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-	if ( (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK) )
+	if ( uMsg == WM_LBUTTONDOWN )
 	{
-		last_mouseX = (short)LOWORD( lParam );
-		last_mouseY = (short)HIWORD( lParam );
+		last_mouseX = (float)LOWORD( lParam );
+		last_mouseY = (float)HIWORD( lParam );
 		mouse_button = true;
 	}
 	else if ( (uMsg == WM_LBUTTONUP) )
@@ -136,16 +167,50 @@ LRESULT EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	}
 	else if ( uMsg == WM_MOUSEMOVE )
 	{
-		int iMouseX = (short)LOWORD( lParam );
-		int iMouseY = (short)HIWORD( lParam );
+		if ( !mouse_button ) return;
+
+		float iMouseX = (float)LOWORD( lParam );
+		float iMouseY = (float)HIWORD( lParam );
+
+		float delta_hor_angle = horizontal_multiplier * (iMouseX - last_mouseX) / windowX;
+		float delta_vert_angle = vertical_multiplier * (iMouseY - last_mouseY) / windowY;
+
+		horizontal_angle += delta_hor_angle;
+		vertical_angle += delta_vert_angle;
+
+		last_mouseX = iMouseX;
+		last_mouseY = iMouseY;
+	}
+	else if ( uMsg == WM_QUIT )
+		endThread = true;
+}
 
 
+void EngineClass::updateSky()
+{
+	while ( !endThread )
+	{
+		float currentTime = time_manager.onStartRenderFrame();
+		currentTime *= rate;		// Przeliczamy na czas jaki up³yn¹³ dla nieba.
+		time += currentTime;		// Dodajemy do aktualnego czasu.
+
+		sun_position->setSunConditions( latitude, longitude, time );
+		DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
+		sky_dome->update_sky_dome( sun_dir, turbidity, albedo, sky_intensity );
 	}
 }
 
 
-
-
+DirectX::XMMATRIX EngineClass::getRotationMatrix()
+{
+	DirectX::XMVECTOR zenith = DirectX::XMVectorSet( 0.0, 1.0, 0.0, 0.0 );
+	DirectX::XMVECTOR right = DirectX::XMVectorSet( 1.0, 0.0, 0.0, 0.0 );
+	DirectX::XMVECTOR y_rotation = DirectX::XMQuaternionRotationNormal( zenith, horizontal_angle );
+	//right = DirectX::XMVector3Rotate( right, y_rotation );
+	DirectX::XMVECTOR x_rotation = DirectX::XMQuaternionRotationAxis( right, vertical_angle );
+	return DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( x_rotation, y_rotation ) );
+	//return DirectX::XMMatrixRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0f );
+}
 
 
 

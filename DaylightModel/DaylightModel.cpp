@@ -15,6 +15,9 @@ HWND hWnd;
 
 EngineClass engine;
 
+unsigned int windowX = 1024;
+unsigned int windowY = 768;
+
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
@@ -47,7 +50,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_DAYLIGHTMODEL));
 
-	DX11_INIT_RESULT result = engine.init_all( hWnd, 1024, 768 );
+	DX11_INIT_RESULT result = engine.init_all( hWnd, windowX, windowY );
 	if ( result != DX11_INIT_OK )
 		return 0;
 
@@ -66,7 +69,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 
 		if ( msg.message == WM_QUIT )
+		{
+			engine.engineEnd();
 			break;
+		}
 	}
 
 

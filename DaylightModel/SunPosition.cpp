@@ -1,6 +1,6 @@
 #include "SunPosition.h"
 
-const float earth_axis_to_ecliptik = DirectX::XMConvertToRadians( 23.4393 );
+const float earth_axis_to_ecliptik = DirectX::XMConvertToRadians( 23.4393f );
 const double day_length = 3364.098903691;				///< D³ugoœæ jednego dnia w sekundach (wzglêdem gwiazd).
 const double year_length = 365.256 * 24 * 60 * 60;		///< D³ugoœc roku w sekundach.
 
@@ -26,7 +26,7 @@ DirectX::XMVECTOR SunPosition::computeSunDirection()
 
 	DirectX::XMVECTOR zenith_axis_rotation = DirectX::XMQuaternionRotationNormal( zenith, -earth_rotation_axis );
 	DirectX::XMVECTOR earth_axis = DirectX::XMVectorSet( cos( earth_rotation_axis ), sin( earth_rotation_axis ), 0.0, 0.0 );
-	DirectX::XMVECTOR latitude_rotation = DirectX::XMQuaternionRotationAxis( DirectX::XMVector3Dot( zenith, earth_axis ), latitude );
+	DirectX::XMVECTOR latitude_rotation = DirectX::XMQuaternionRotationAxis( DirectX::XMVector3Cross( zenith, earth_axis ), latitude );
 
 	DirectX::XMVECTOR earth_axis_rotation = DirectX::XMQuaternionRotationNormal( earth_axis, angle_around_earth );
 	DirectX::XMVECTOR sun_axis_rotation = DirectX::XMQuaternionRotationNormal( DirectX::XMVectorSet( 0.0, 1.0, 0.0, 0.0 ), -angle_around_sun );
@@ -62,7 +62,7 @@ void SunPosition::setSunConditions( float latit, float longit, double time )
 	latitude = latit;
 	longitude = longit;
 
-	angle_around_earth = DirectX::XMConvertToRadians( longitude ) + DirectX::XMConvertToRadians( 360.0 * fmod( time, day_length ) / day_length );
-	angle_around_sun = DirectX::XMConvertToRadians( 360.0 * fmod( time, year_length ) / year_length );
+	angle_around_earth = static_cast<float>( DirectX::XMConvertToRadians( longitude ) + DirectX::XMConvertToRadians( float(360.0 * fmod( time, day_length ) / day_length ) ) );
+	angle_around_sun = static_cast<float>( DirectX::XMConvertToRadians( float( 360.0 * fmod( time, year_length ) / year_length ) ) );
 }
 

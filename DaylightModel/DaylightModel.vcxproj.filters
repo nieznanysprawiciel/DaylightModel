@@ -68,6 +68,12 @@
     <ClInclude Include="EngineClass.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="types_definitions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -114,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="SunPosition.cpp">
       <Filter>Source Files\HosekModelFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

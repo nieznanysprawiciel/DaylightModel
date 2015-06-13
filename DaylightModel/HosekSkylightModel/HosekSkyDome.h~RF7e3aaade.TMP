@@ -36,7 +36,7 @@ private:
 
 	HosekSkylightModel skylight_model;	///<Obiekt, który bêdzie podawa³ informacje o kolorach
 
-	BufferObject*		constantBuffer;	///<Bufor sta³ych u¿ywanych do ditheringu.
+	BufferObject*		constantBuffer;
 
 	void generate_sphere(int vertical, int horizontal, float radius );
 public:

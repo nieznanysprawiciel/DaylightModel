@@ -23,6 +23,11 @@ cbuffer ConstantPerMesh : register( b1 )
 	float Power;
 }
 
+cbuffer SkyDomeConstants : register( b2 )
+{
+	matrix dither_mask;
+}
+
 
 //--------------------------------------------------------------------------------------
 struct VS_INPUT
@@ -60,5 +65,11 @@ PS_INPUT vertex_shader( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float3 pixel_shader( PS_INPUT input) : SV_Target
 {
-    return input.Color;
+	int2 pixelPos = input.Pos - float2( 0.5, 0.5 );
+	pixelPos = pixelPos % int2( 4, 4 );
+	
+	float3 weight = dither_mask[pixelPos.x][pixelPos.y].xxx;
+	weight = weight * float( 1.0 / 15 ).xxx;
+	
+    return input.Color + (input.Color * weight);
 }

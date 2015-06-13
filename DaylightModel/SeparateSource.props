@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <RootDir>$(SolutionDir)..\</RootDir>
+    <ReleaseName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</ReleaseName>
+    <BuildFolder>$(ProjectName)_$(Configuration)_$(PlatformTarget)\</BuildFolder>
+    <IntermediateDir>$(RootDir)Intermediate\$(BuildFolder)</IntermediateDir>
+    <ReleaseDir>$(RootDir)ProjectRelease\</ReleaseDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(IntermediateDir)</OutDir>
+    <IntDir>$(IntermediateDir)\</IntDir>
+    <TargetName>$(ReleaseName)</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <OutputFile>$(IntermediateDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProfileGuidedDatabase>$(IntermediateDir)$(TargetName).pgd</ProfileGuidedDatabase>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(IntermediateDir)$(TargetName).exe" "$(ReleaseDir)$(ReleaseName).exe"</Command>
+    </PostBuildEvent>
+    <Lib>
+      <OutputFile>$(IntermediateDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="RootDir">
+      <Value>$(RootDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ReleaseName">
+      <Value>$(ReleaseName)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BuildFolder">
+      <Value>$(BuildFolder)</Value>
+    </BuildMacro>
+    <BuildMacro Include="IntermediateDir">
+      <Value>$(IntermediateDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ReleaseDir">
+      <Value>$(ReleaseDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

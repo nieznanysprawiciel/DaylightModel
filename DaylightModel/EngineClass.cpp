@@ -40,7 +40,7 @@ EngineClass::EngineClass()
 
 	endThread = false;
 
-	rate = 60;		// W ka¿d¹ sekundê czasu rzeczywistego mija 60 sekund.
+	rate = 360;		// W ka¿d¹ sekundê czasu rzeczywistego mija 60 sekund.
 	time_manager.initTimer();
 }
 

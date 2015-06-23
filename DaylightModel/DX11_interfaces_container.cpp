@@ -108,7 +108,7 @@ DX11_interfaces_container::DX11_interfaces_container()
 		_swap_chain_desc.BufferCount = 1;
 		_swap_chain_desc.BufferDesc.Width = _window_width;
 		_swap_chain_desc.BufferDesc.Height = _window_height;
-		_swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		_swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 		_swap_chain_desc.BufferDesc.RefreshRate.Numerator = 60;
 		_swap_chain_desc.BufferDesc.RefreshRate.Denominator = 1;
 		_swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;

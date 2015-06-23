@@ -69,7 +69,7 @@ float3 pixel_shader( PS_INPUT input) : SV_Target
 	pixelPos = pixelPos % int2( 4, 4 );
 	
 	float3 weight = dither_mask[pixelPos.x][pixelPos.y].xxx;
-	weight = weight * float( 1.0 / 15 ).xxx;
+	weight = weight * float( 1.0 / 255 ).xxx;
 	
-    return input.Color + (input.Color * weight);
+    return input.Color + weight;//(input.Color * weight);
 }

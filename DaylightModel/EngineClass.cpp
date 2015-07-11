@@ -6,6 +6,12 @@
 extern unsigned int windowX;
 extern unsigned int windowY;
 
+ID3D11Device* WINAPI DXUTGetD3D11Device() { return DX11_constant_buffers_container::device; }
+ID3D11DeviceContext* WINAPI DXUTGetD3D11DeviceContext() { return DX11_constant_buffers_container::device_context; }
+ID3D11RenderTargetView* WINAPI DXUTGetD3D11RenderTargetView() { return DX11_constant_buffers_container::render_target; }
+ID3D11DepthStencilView* WINAPI DXUTGetD3D11DepthStencilView() { return DX11_constant_buffers_container::z_buffer_view; }
+IDXGISwapChain* WINAPI DXUTGetDXGISwapChain() { return DX11_constant_buffers_container::swap_chain; }
+
 
 void skyThreadFunction( EngineClass* engine )
 {
@@ -42,15 +48,21 @@ EngineClass::EngineClass()
 
 	rate = 360;		// W ka¿d¹ sekundê czasu rzeczywistego mija 60 sekund.
 	time_manager.initTimer();
+	sky_time_manager.initTimer();
 }
 
-
-EngineClass::~EngineClass()
+void EngineClass::release()
 {
 	delete sun_position;
 	delete sky_dome;
 	delete models_manager;
+	//guiManager.ReleaseGUI();
 	release_DirectX();
+}
+
+EngineClass::~EngineClass()
+{
+
 }
 
 DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigned int height )
@@ -82,6 +94,8 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 
 	skyThread = std::thread( skyThreadFunction, this );
 
+	//guiManager.initGUI( device, device_context );
+
 	return result;
 }
 
@@ -91,6 +105,8 @@ void EngineClass::render_frame()
 
 	if ( !sky_dome )
 		return;
+
+	float timeElapsed = (float)time_manager.queryTimeFromBegin();
 
 	// Ustawiamy format wierzcho³ków i bufory sta³ych
 	device_context->IASetInputLayout( sky_dome->get_vertex_layout() );
@@ -149,12 +165,17 @@ void EngineClass::render_frame()
 
 	//depth_buffer_enable( true );		// W³¹czamy z-bufor spowrotem
 
+	//guiManager.RenderGUI( timeElapsed );
+
 	end_scene_and_present();
 }
 
 
 void EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
+	//if( guiManager.HandleMessages( hWnd, uMsg, wParam, lParam ) )
+		//return;
+
 	if ( uMsg == WM_LBUTTONDOWN )
 	{
 		last_mouseX = (float)LOWORD( lParam );
@@ -190,7 +211,7 @@ void EngineClass::updateSky()
 {
 	while ( !endThread )
 	{
-		float currentTime = time_manager.onStartRenderFrame();
+		float currentTime = sky_time_manager.onStartRenderFrame();
 		currentTime *= rate;		// Przeliczamy na czas jaki up³yn¹³ dla nieba.
 		time += currentTime;		// Dodajemy do aktualnego czasu.
 

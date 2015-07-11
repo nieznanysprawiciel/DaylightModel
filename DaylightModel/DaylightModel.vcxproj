@@ -55,12 +55,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>D:\ProgramyVS\DaylightModel\DaylightModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(DX11_LinkLibsDebug);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,6 +86,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConfigurationFile.h" />
     <ClInclude Include="SWEngineFiles\ConstantBuffersFormat.h" />
     <ClInclude Include="DaylightModel.h" />
     <ClInclude Include="SWEngineFiles\DX11_interfaces_container.h" />
@@ -106,6 +108,7 @@
     <ClInclude Include="types_definitions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConfigurationFile.cpp" />
     <ClCompile Include="SWEngineFiles\BufferObject.cpp" />
     <ClCompile Include="DaylightModel.cpp" />
     <ClCompile Include="SWEngineFiles\DX11_interfaces_container.cpp" />

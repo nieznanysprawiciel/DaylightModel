@@ -75,6 +75,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		}
 	}
 
+	engine.release();
 
 	return (int) msg.wParam;
 }

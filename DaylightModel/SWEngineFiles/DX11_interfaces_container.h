@@ -78,7 +78,7 @@ private:
 	static D3D11_INPUT_ELEMENT_DESC*		_vertex_layout_desc;	///<Aktualny deskryptor layoutu wierzcho³ka.
 	static unsigned int				_layout_elements_count;			///<Liczba elementów w talicy deskryptora layoutu.
 	static D3D11_SAMPLER_DESC		_sampler_desc;			///<Deskryptor samplera.
-protected:
+public:		//Hack
 	static ID3D11Device*			device;					///<Zmienna s³u¿y do tworzenia obiektó, buforów tekstur i zasobów
 	static ID3D11DeviceContext*		device_context;			///<Zmienna u¿ywana do renderowania sceny, ustawiania buforów, shaderów itp.
 	static IDXGISwapChain*			swap_chain;				///<S³u¿y do prezentowania ramki na ekranie

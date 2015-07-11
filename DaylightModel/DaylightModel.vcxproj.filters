@@ -77,6 +77,9 @@
     <ClInclude Include="SWEngineFiles\SkyDome.h">
       <Filter>Source Files\SWEngineFiles</Filter>
     </ClInclude>
+    <ClInclude Include="ConfigurationFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,6 +129,9 @@
     </ClCompile>
     <ClCompile Include="SWEngineFiles\VertexShaderObject.cpp">
       <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurationFile.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

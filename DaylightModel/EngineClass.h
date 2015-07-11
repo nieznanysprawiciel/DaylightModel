@@ -7,6 +7,7 @@
 #include "SunPosition.h"
 #include "TimeManager.h"
 #include <thread>
+//#include "GUIManager.h"
 
 class EngineClass : public DX11_constant_buffers_container
 {
@@ -21,11 +22,13 @@ private:
 	bool mouse_button;
 
 	//
-	ModelsManager* models_manager;
-	HosekSkyDome* sky_dome;
-	SunPosition* sun_position;
+	ModelsManager*			models_manager;
+	HosekSkyDome*			sky_dome;
+	SunPosition*			sun_position;
+	//GUIManager				guiManager;
 
-	TimeManager time_manager;
+	TimeManager				time_manager;
+	TimeManager				sky_time_manager;
 
 	float		latitude;					///< Szerokoœæ geograficzna na jakiej znajduje siê obserwator.
 	float		longitude;					///< D³ugoœæ geograficzna obserwatora.
@@ -56,6 +59,7 @@ public:
 	DX11_INIT_RESULT init_all( HWND window, unsigned int width, unsigned int height );
 	void render_frame();
 	void updateSky();
+	void release();
 
 	void HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	inline void engineEnd()

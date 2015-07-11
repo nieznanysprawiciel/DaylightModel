@@ -20,7 +20,10 @@ void skyThreadFunction( EngineClass* engine )
 
 
 EngineClass::EngineClass()
+	: config_file("config/config.txt")
 {
+	config_needs_reload = false;
+
 	models_manager = new ModelsManager;
 	sky_dome = new HosekSkyDome( models_manager );
 	sun_position = new SunPosition;
@@ -49,6 +52,15 @@ EngineClass::EngineClass()
 	rate = 360;		// W ka¿d¹ sekundê czasu rzeczywistego mija 60 sekund.
 	time_manager.initTimer();
 	sky_time_manager.initTimer();
+	config_file.ReloadFile();
+
+	latitude = config_file.GetValue< float >("latitude");
+	longitude = config_file.GetValue< float >("longitude");
+	turbidity = config_file.GetValue< double >("turbidity");
+
+	albedo[ 0 ] = config_file.GetValue< float >( "albedoR" );
+	albedo[ 1 ] = config_file.GetValue< float >( "albedoG" );
+	albedo[ 2 ] = config_file.GetValue< float >( "albedoB" );
 }
 
 void EngineClass::release()
@@ -202,6 +214,11 @@ void EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		last_mouseX = iMouseX;
 		last_mouseY = iMouseY;
 	}
+	else if( uMsg == WM_KEYUP )
+	{
+		if( wParam == VK_SPACE )
+			config_needs_reload = true;
+	}
 	else if ( uMsg == WM_QUIT )
 		endThread = true;
 }
@@ -211,6 +228,20 @@ void EngineClass::updateSky()
 {
 	while ( !endThread )
 	{
+		if( config_needs_reload )
+		{
+			config_file.ReloadFile();		// Tylko ten w¹tek ma prawo to wywo³aæ. Nie ma innej synchronizacji.
+			config_needs_reload = false;	// Zaznaczamy, ¿e obs³u¿yliœmy.
+
+			latitude = config_file.GetValue< float >( "latitude" );
+			longitude = config_file.GetValue< float >( "longitude" );
+			turbidity = config_file.GetValue< double >( "turbidity" );
+
+			albedo[ 0 ] = config_file.GetValue< float >( "albedoR" );
+			albedo[ 1 ] = config_file.GetValue< float >( "albedoG" );
+			albedo[ 2 ] = config_file.GetValue< float >( "albedoB" );
+		}
+
 		float currentTime = sky_time_manager.onStartRenderFrame();
 		currentTime *= rate;		// Przeliczamy na czas jaki up³yn¹³ dla nieba.
 		time += currentTime;		// Dodajemy do aktualnego czasu.

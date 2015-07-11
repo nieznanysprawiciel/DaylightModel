@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <fstream>
+#include <sstream>
 
 class ConfigurationFile
 {
@@ -28,3 +29,15 @@ private:
 	std::string					ParseNumericConstant	( std::string& line, unsigned int& streamIdx );
 };
 
+
+template<typename ValueType>
+ValueType ConfigurationFile::GetValue( const std::string& key )
+{
+	std::string& value = m_values.at( key );
+	std::stringstream converterStream;
+	converterStream << value;
+
+	ValueType returnValue;
+	converterStream >> returnValue;
+	return returnValue;
+}

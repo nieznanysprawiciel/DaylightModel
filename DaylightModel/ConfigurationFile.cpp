@@ -1,6 +1,7 @@
 #include "ConfigurationFile.h"
 #include <cctype>
 
+
 ConfigurationFile::ConfigurationFile( const std::string& fileName )
 {
 	m_configFilePath = fileName;
@@ -79,12 +80,12 @@ std::string ConfigurationFile::ParseValue( std::string& line, unsigned int& stre
 
 	IgnoreBlankCharacters( line, streamIdx );
 
-	if( streamIdx >= lineSize || line[ streamIdx ] != '=' )
+	if( streamIdx >= lineSize || line[ streamIdx++ ] != '=' )
 		return "";
 
 	IgnoreBlankCharacters( line, streamIdx );
 
-	if( streamIdx < lineSize && line[ streamIdx++ ] == '"' )
+	if( streamIdx < lineSize && line[ streamIdx ] == '"' )
 		return ParseString( line, streamIdx );
 	else
 		return ParseNumericConstant( line, streamIdx );
@@ -100,7 +101,7 @@ void ConfigurationFile::IgnoreBlankCharacters( std::string& line, unsigned int& 
 std::string ConfigurationFile::ParseString( std::string& line, unsigned int& streamIdx )
 {
 	size_t lineSize = line.size();
-	unsigned int beginString = streamIdx;
+	unsigned int beginString = ++streamIdx;			//streamIdx jest cudzys³owem, wiêc inkrementujemy.
 	while( streamIdx < lineSize && line[ streamIdx ] != '"' )
 		++streamIdx;
 

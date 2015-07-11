@@ -8,6 +8,7 @@
 #include "TimeManager.h"
 #include <thread>
 //#include "GUIManager.h"
+#include "ConfigurationFile.h"
 
 class EngineClass : public DX11_constant_buffers_container
 {
@@ -29,6 +30,9 @@ private:
 
 	TimeManager				time_manager;
 	TimeManager				sky_time_manager;
+
+	ConfigurationFile		config_file;
+	bool					config_needs_reload;
 
 	float		latitude;					///< Szerokoœæ geograficzna na jakiej znajduje siê obserwator.
 	float		longitude;					///< D³ugoœæ geograficzna obserwatora.

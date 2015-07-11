@@ -144,7 +144,7 @@ void HosekSkyDome::update_sky_dome( XMVECTOR sun_direction,
 		float theta = XMVectorGetX( angle );
 		
 		if ( theta > XM_PIDIV2 )
-		{	// Je¿eli jestesmy poni¿ej horyzontu to na razie malujemy na czerwono
+		{	// Je¿eli jestesmy poni¿ej horyzontu to próbkujemy jakiœ wierzcho³ek obok horyzontu
 			back_vert_buffer[i].color = back_vert_buffer[vert_count/2 - 2].color;
 			continue;
 		}

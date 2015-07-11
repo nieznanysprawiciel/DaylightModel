@@ -12,15 +12,15 @@
     <Filter Include="Source Files\HosekModelFiles">
       <UniqueIdentifier>{45fc04de-221c-40b3-8792-fcaa080dcf5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SWEngineFiles">
+      <UniqueIdentifier>{f6caa790-aa72-4ffb-8207-2ca96e1a47ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DaylightModel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX11_interfaces_container.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -32,21 +32,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="loader_interface.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="meshes_textures_materials.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelsManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectDeleter.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceContainer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="HosekSkylightModel\ArHosekSkyModelData_RGB.h">
       <Filter>Source Files\HosekModelFiles</Filter>
     </ClInclude>
@@ -55,12 +40,6 @@
     </ClInclude>
     <ClInclude Include="HosekSkylightModel\HosekSkyDome.h">
       <Filter>Source Files\HosekModelFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyDome.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffersFormat.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SunPosition.h">
       <Filter>Source Files\HosekModelFiles</Filter>
@@ -74,6 +53,30 @@
     <ClInclude Include="types_definitions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SWEngineFiles\ConstantBuffersFormat.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\DX11_interfaces_container.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\loader_interface.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\meshes_textures_materials.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\ModelsManager.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\ObjectDeleter.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\ResourceContainer.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="SWEngineFiles\SkyDome.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -82,34 +85,7 @@
     <ClCompile Include="DaylightModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX11_interfaces_container.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EngineClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BufferObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelsManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelShaderObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexShaderObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model3DFromFile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshPartObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HosekSkylightModel\HosekSkylightModel.cpp">
@@ -123,6 +99,33 @@
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\BufferObject.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\DX11_interfaces_container.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\MaterialObject.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\MeshPartObject.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\Model3DFromFile.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\ModelsManager.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\PixelShaderObject.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\TextureObject.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\VertexShaderObject.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

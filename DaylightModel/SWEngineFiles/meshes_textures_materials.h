@@ -21,8 +21,8 @@
 #define WRONG_MATERIAL_ID				WRONG_ID
 
 
-#define INDEX_BUFFER_UINT16		// Definiujemy czy chcemy mieæ bufor indeksów 16-bitowy czy 32-bitowy
-//#define INDEX_BUFFER_UINT32			// Wybraæ tylko jedno, inaczej bêdzie b³¹d kompilacji
+//#define INDEX_BUFFER_UINT16		// Definiujemy czy chcemy mieæ bufor indeksów 16-bitowy czy 32-bitowy
+#define INDEX_BUFFER_UINT32			// Wybraæ tylko jedno, inaczej bêdzie b³¹d kompilacji
 
 ///@def VERTICIES_MAX_COUNT
 ///@brief VERTICIES_MAX_COUNT zawiera sta³¹, która jest maksymaln¹ liczb¹ wierzcho³ków w buforze

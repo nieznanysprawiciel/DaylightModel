@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ModelsManager.h"
-#include "DX11_interfaces_container.h"
+#include "SWEngineFiles\ModelsManager.h"
+#include "SWEngineFiles\DX11_interfaces_container.h"
 #include "HosekSkylightModel\HosekSkyDome.h"
-#include "ConstantBuffersFormat.h"
+#include "SWEngineFiles\ConstantBuffersFormat.h"
 #include "SunPosition.h"
 #include "TimeManager.h"
 #include <thread>

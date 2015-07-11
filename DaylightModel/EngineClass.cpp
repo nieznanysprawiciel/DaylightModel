@@ -73,12 +73,12 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 	set_projection_matrix( XMConvertToRadians( 45 ),
 						   (float)width / (float)height, 1, 100000 );
 	device_context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
-
+	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 
 	//DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
 	sun_position->setSunConditions( DirectX::XMConvertToRadians( latitude ), DirectX::XMConvertToRadians( longitude ), time );
 	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
-	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 100, sky_intensity );
+	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 1000, sky_intensity );
 
 	skyThread = std::thread( skyThreadFunction, this );
 

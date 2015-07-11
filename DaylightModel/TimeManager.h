@@ -2,7 +2,7 @@
 /**@file TimeManager.h
 @brief Plik zawiera deklaracjê klasy TimeManager do obs³ugi rzeczy zwi¹zanych z czasem.*/
 
-#include "types_definitions.h"
+#include "SWEngineFiles\types_definitions.h"
 
 
 /**@brief Klasa obs³uguje wszystko co zwi¹zane z czasem.

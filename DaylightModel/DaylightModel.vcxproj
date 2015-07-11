@@ -56,6 +56,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\ProgramyVS\DaylightModel\DaylightModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -71,6 +72,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\ProgramyVS\DaylightModel\DaylightModel;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -83,20 +85,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConstantBuffersFormat.h" />
+    <ClInclude Include="SWEngineFiles\ConstantBuffersFormat.h" />
     <ClInclude Include="DaylightModel.h" />
-    <ClInclude Include="DX11_interfaces_container.h" />
+    <ClInclude Include="SWEngineFiles\DX11_interfaces_container.h" />
     <ClInclude Include="EngineClass.h" />
     <ClInclude Include="HosekSkylightModel\ArHosekSkyModelData_RGB.h" />
     <ClInclude Include="HosekSkylightModel\HosekSkyDome.h" />
     <ClInclude Include="HosekSkylightModel\HosekSkyModel.h" />
-    <ClInclude Include="loader_interface.h" />
-    <ClInclude Include="meshes_textures_materials.h" />
-    <ClInclude Include="ModelsManager.h" />
-    <ClInclude Include="ObjectDeleter.h" />
+    <ClInclude Include="SWEngineFiles\loader_interface.h" />
+    <ClInclude Include="SWEngineFiles\meshes_textures_materials.h" />
+    <ClInclude Include="SWEngineFiles\ModelsManager.h" />
+    <ClInclude Include="SWEngineFiles\ObjectDeleter.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ResourceContainer.h" />
-    <ClInclude Include="SkyDome.h" />
+    <ClInclude Include="SWEngineFiles\ResourceContainer.h" />
+    <ClInclude Include="SWEngineFiles\SkyDome.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SunPosition.h" />
     <ClInclude Include="targetver.h" />
@@ -104,25 +106,25 @@
     <ClInclude Include="types_definitions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BufferObject.cpp" />
+    <ClCompile Include="SWEngineFiles\BufferObject.cpp" />
     <ClCompile Include="DaylightModel.cpp" />
-    <ClCompile Include="DX11_interfaces_container.cpp" />
+    <ClCompile Include="SWEngineFiles\DX11_interfaces_container.cpp" />
     <ClCompile Include="EngineClass.cpp" />
     <ClCompile Include="HosekSkylightModel\HosekSkyDome.cpp" />
     <ClCompile Include="HosekSkylightModel\HosekSkylightModel.cpp" />
-    <ClCompile Include="MaterialObject.cpp" />
-    <ClCompile Include="MeshPartObject.cpp" />
-    <ClCompile Include="Model3DFromFile.cpp" />
-    <ClCompile Include="ModelsManager.cpp" />
-    <ClCompile Include="PixelShaderObject.cpp" />
+    <ClCompile Include="SWEngineFiles\MaterialObject.cpp" />
+    <ClCompile Include="SWEngineFiles\MeshPartObject.cpp" />
+    <ClCompile Include="SWEngineFiles\Model3DFromFile.cpp" />
+    <ClCompile Include="SWEngineFiles\ModelsManager.cpp" />
+    <ClCompile Include="SWEngineFiles\PixelShaderObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SunPosition.cpp" />
-    <ClCompile Include="TextureObject.cpp" />
+    <ClCompile Include="SWEngineFiles\TextureObject.cpp" />
     <ClCompile Include="TimeManager.cpp" />
-    <ClCompile Include="VertexShaderObject.cpp" />
+    <ClCompile Include="SWEngineFiles\VertexShaderObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DaylightModel.rc" />

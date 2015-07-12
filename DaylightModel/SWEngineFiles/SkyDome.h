@@ -8,6 +8,9 @@ obiekty typu skyboxy, skydome'y i wszystkie inne twory, wyœwietlaj¹ce t³o.*/
 #include "meshes_textures_materials.h"
 #include "ModelsManager.h"
 
+#include <mutex>
+#include <condition_variable> 
+
 
 /**@brief Klasa jest interfejsem dla wszystkich klas, które maj¹ wyœwietlaæ jakieœ t³o.
 
@@ -31,17 +34,19 @@ Wszystkie odwo³ania do obiektów s¹ kasowane w destruktorze, wiêc nie trzeba siê 
 */
 class SkyDome : protected DX11_interfaces_container
 {
-public:
-	bool update_vertex_buffer;			///<Ustawiane w momencie zakoñczenia generowania nieba, w celu zaktualizowania bufora
-private:
-	ModelsManager* models_manager;		///<WskaŸnik na ModelsManager. Bufory s¹ zarz¹dzane przez niego.
-
 protected:
-	BufferObject* vertex_buffer;		///<Bufor wierzcho³ków
-	BufferObject* index_buffer;			///<Bufor indeksów
-	ID3D11Buffer* constant_buffer;		///<Bufor sta³ych dla shaderów
-	ID3D11InputLayout* layout;			///<Layout wierzcho³ków u¿ywanych przez klasê
-	ModelPart display_data;				///<Shadery, tekstury itp.
+	bool				update_vertex_buffer;					///<Ustawiane w momencie zakoñczenia generowania nieba, w celu zaktualizowania bufora
+private:
+	ModelsManager*		models_manager;			///<WskaŸnik na ModelsManager. Bufory s¹ zarz¹dzane przez niego.
+
+	std::mutex					mutex;
+	std::condition_variable		condition;
+protected:
+	BufferObject*		vertex_buffer;			///<Bufor wierzcho³ków
+	BufferObject*		index_buffer;			///<Bufor indeksów
+	ID3D11Buffer*		constant_buffer;		///<Bufor sta³ych dla shaderów
+	ID3D11InputLayout*	layout;					///<Layout wierzcho³ków u¿ywanych przez klasê
+	ModelPart			display_data;			///<Shadery, tekstury itp.
 
 public:
 	SkyDome( ModelsManager* man )
@@ -79,11 +84,27 @@ public:
 				display_data.texture[i]->delete_object_reference(), display_data.texture[i] = nullptr;
 	}
 
-	inline BufferObject* get_vertex_buffer( ) { return vertex_buffer; }			///<Zwraca bufor wierzcho³ków
-	inline BufferObject* get_index_buffer( ) { return index_buffer; }			///<Zwraca bufor indeksów
-	inline ID3D11Buffer* get_constant_buffer( ) { return constant_buffer; }		///<Zwraca bufor sta³ych dla shaderów
-	inline ID3D11InputLayout* get_vertex_layout() { return layout; }			///<Zwraca layout wierzcho³ka
-	inline ModelPart* get_model_part( ) { return &display_data; }				///<Zwraca dane potrzebne do wyœwietlania
+	inline BufferObject*			get_vertex_buffer()				{ return vertex_buffer; }			///<Zwraca bufor wierzcho³ków
+	inline BufferObject*			get_index_buffer()				{ return index_buffer; }			///<Zwraca bufor indeksów
+	inline ID3D11Buffer*			get_constant_buffer()			{ return constant_buffer; }			///<Zwraca bufor sta³ych dla shaderów
+	inline ID3D11InputLayout*		get_vertex_layout()				{ return layout; }					///<Zwraca layout wierzcho³ka
+	inline ModelPart*				get_model_part()				{ return &display_data; }			///<Zwraca dane potrzebne do wyœwietlania
+
+	inline bool						update_ready()					{ return update_vertex_buffer; }	///<Pozwlaa sprawdziæ czy mo¿na ju¿ updatowaæ bufory.
+	inline void						wait_for_update()													///<Zawiesza w¹tek w oczekiwaniu a¿ bufory zostan¹ zapdatowane.
+	{
+		std::unique_lock<std::mutex> uniqueLock( mutex );
+		while( update_vertex_buffer )
+			condition.wait( uniqueLock );
+	}
+	/**Ma zostaæ wywo³ane na koñcu funkcji update_buffers. Informuje w¹tek generuj¹cy dane, ¿e bufory zosta³y ju¿ przepisane
+	i mo¿na generowaæ kolejn¹ klatkê.*/
+	inline void						signal()
+	{
+		std::unique_lock<std::mutex> uniqueLock( mutex );
+		update_vertex_buffer = false;
+		condition.notify_all();
+	}
 
 	/**@brief Funkcja jest wywo³ywana w momencie kiedy zmienna update_vertex_buffer zawiera wartoœæ true.
 	

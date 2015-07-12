@@ -1,4 +1,4 @@
-turbidity = 4.0
+turbidity = 3.0
 latitude = 53
 longitude = 0
 datetime = "01.06.2015 11:00:00"

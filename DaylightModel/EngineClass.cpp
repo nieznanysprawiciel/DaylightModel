@@ -99,7 +99,7 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 	//DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
 	sun_position->setSunConditions( DirectX::XMConvertToRadians( latitude ), DirectX::XMConvertToRadians( longitude ), time );
 	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
-	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 1000, sky_intensity );
+	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 10000, sky_intensity );
 
 	skyThread = std::thread( skyThreadFunction, this );
 
@@ -125,7 +125,7 @@ void EngineClass::render_frame()
 
 
 	// Powinna byæ to raczej rzadka czynnoœæ, poniewa¿ aktualizacja jest kosztowna czasowo
-	if ( sky_dome->update_vertex_buffer )
+	if ( sky_dome->update_ready() )
 		sky_dome->update_buffers();
 
 	// Ustawiamy bufor wierzcho³ków
@@ -216,7 +216,7 @@ void EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 		if( wParam == VK_SPACE )
 			config_needs_reload = true;
 	}
-	else if ( uMsg == WM_QUIT )
+	else if( uMsg == WM_QUIT )
 		endThread = true;
 }
 
@@ -249,6 +249,9 @@ void EngineClass::updateSky()
 {
 	while ( !endThread )
 	{
+		sky_dome->wait_for_update();
+		if( endThread ) return;		//Na wszelki wypadek, ¿eby nie czekaæ za d³ugo na zakoñczenie.
+
 		float currentTime = sky_time_manager.onStartRenderFrame();
 		currentTime *= rate;		// Przeliczamy na czas jaki up³yn¹³ dla nieba.
 		time += currentTime;		// Dodajemy do aktualnego czasu.

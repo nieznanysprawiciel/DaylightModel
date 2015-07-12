@@ -271,5 +271,6 @@ void HosekSkyDome::update_buffers( )
 {
 	device_context->UpdateSubresource( vertex_buffer->get(), 0, nullptr, back_vert_buffer, 0, 0 );
 	device_context->UpdateSubresource( constantBuffer->get(), 0, nullptr, &constantBufferData, 0, 0 );
-	update_vertex_buffer = false;
+	
+	signal();
 }

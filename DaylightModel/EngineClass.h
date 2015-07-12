@@ -75,6 +75,7 @@ public:
 	inline void engineEnd()
 	{
 		endThread = true;
+		sky_dome->signal();		// Puszczamy w¹tek, ¿eby siê mog³ skoñczyæ.
 		skyThread.join();
 	}
 };

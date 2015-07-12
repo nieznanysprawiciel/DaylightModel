@@ -1,7 +1,8 @@
 turbidity = 4.0
-latitude = 10
+latitude = 53
 longitude = 0
-datetime = "11.07.2015 21:52:12"
+datetime = "01.06.2015 11:00:00"
 albedoR = 0.8
 albedoG = 0.8
 albedoB = 0.8
+rate = 360

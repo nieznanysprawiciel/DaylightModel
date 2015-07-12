@@ -31,29 +31,35 @@ private:
 	TimeManager				time_manager;
 	TimeManager				sky_time_manager;
 
+
+	// Modyfikuje jedynie w¹tek przeliczaj¹cy niebo
 	ConfigurationFile		config_file;
 	bool					config_needs_reload;
+	float					rate;
 
 	float		latitude;					///< Szerokoœæ geograficzna na jakiej znajduje siê obserwator.
 	float		longitude;					///< D³ugoœæ geograficzna obserwatora.
-	float		time;
+	double		time;
 	double		albedo[3];
 	double		turbidity;
 	float		sky_intensity;
 	float		sun_intensity;
+	
+	void		ReloadConfigurationFile();
+	//
 
 	bool		endThread;
 	std::thread	skyThread;
-	float		rate;
+	
 
 	ConstantPerFrame				shader_data_per_frame;		///<Bufor sta³ych zmiennych co ramkê animacji
 
 	// Funkcje pomocnicze do renderingu
-	void set_textures( const ModelPart& model );
-	void set_index_buffer( BufferObject* buffer );
-	bool set_vertex_buffer( BufferObject* buffer );
-	void copy_material( ConstantPerMesh* shader_data_per_mesh, const ModelPart* model );
-	void set_projection_matrix( float angle, float X_to_Y, float near_plane, float far_plane );
+	void		set_textures				( const ModelPart& model );
+	void		set_index_buffer			( BufferObject* buffer );
+	bool		set_vertex_buffer			( BufferObject* buffer );
+	void		copy_material				( ConstantPerMesh* shader_data_per_mesh, const ModelPart* model );
+	void		set_projection_matrix		( float angle, float X_to_Y, float near_plane, float far_plane );
 
 	DirectX::XMMATRIX getRotationMatrix();
 public:

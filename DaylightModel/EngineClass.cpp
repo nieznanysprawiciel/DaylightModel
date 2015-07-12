@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EngineClass.h"
 #include <thread>
+#include <iomanip>
+#include <ctime>
 
 
 extern unsigned int windowX;
@@ -50,17 +52,12 @@ EngineClass::EngineClass()
 	endThread = false;
 
 	rate = 360;		// W ka¿d¹ sekundê czasu rzeczywistego mija 60 sekund.
+
+
 	time_manager.initTimer();
 	sky_time_manager.initTimer();
-	config_file.ReloadFile();
 
-	latitude = config_file.GetValue< float >("latitude");
-	longitude = config_file.GetValue< float >("longitude");
-	turbidity = config_file.GetValue< double >("turbidity");
-
-	albedo[ 0 ] = config_file.GetValue< float >( "albedoR" );
-	albedo[ 1 ] = config_file.GetValue< float >( "albedoG" );
-	albedo[ 2 ] = config_file.GetValue< float >( "albedoB" );
+	ReloadConfigurationFile();
 }
 
 void EngineClass::release()
@@ -224,27 +221,43 @@ void EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 }
 
 
+void EngineClass::ReloadConfigurationFile()
+{
+	config_file.ReloadFile();
+
+	latitude = config_file.GetValue< float >( "latitude" );
+	longitude = config_file.GetValue< float >( "longitude" );
+	turbidity = config_file.GetValue< double >( "turbidity" );
+
+	albedo[ 0 ] = config_file.GetValue< float >( "albedoR" );
+	albedo[ 1 ] = config_file.GetValue< float >( "albedoG" );
+	albedo[ 2 ] = config_file.GetValue< float >( "albedoB" );
+
+	rate = config_file.GetValue< float >( "rate" );
+
+	std::string newTime = config_file.GetValue< std::string >( "datetime" );
+	
+	std::tm convertedTime;
+	std::stringstream converter( newTime );
+
+	converter >> std::get_time( &convertedTime, "%d.%m.%Y %H:%M:%S" );
+	time_t secondsTime = mktime( &convertedTime );
+	time = (double)secondsTime;
+}
+
 void EngineClass::updateSky()
 {
 	while ( !endThread )
 	{
-		if( config_needs_reload )
-		{
-			config_file.ReloadFile();		// Tylko ten w¹tek ma prawo to wywo³aæ. Nie ma innej synchronizacji.
-			config_needs_reload = false;	// Zaznaczamy, ¿e obs³u¿yliœmy.
-
-			latitude = config_file.GetValue< float >( "latitude" );
-			longitude = config_file.GetValue< float >( "longitude" );
-			turbidity = config_file.GetValue< double >( "turbidity" );
-
-			albedo[ 0 ] = config_file.GetValue< float >( "albedoR" );
-			albedo[ 1 ] = config_file.GetValue< float >( "albedoG" );
-			albedo[ 2 ] = config_file.GetValue< float >( "albedoB" );
-		}
-
 		float currentTime = sky_time_manager.onStartRenderFrame();
 		currentTime *= rate;		// Przeliczamy na czas jaki up³yn¹³ dla nieba.
 		time += currentTime;		// Dodajemy do aktualnego czasu.
+
+		if( config_needs_reload )
+		{
+			ReloadConfigurationFile();		// Tylko ten w¹tek ma prawo to wywo³aæ. Nie ma innej synchronizacji.
+			config_needs_reload = false;	// Zaznaczamy, ¿e obs³u¿yliœmy.
+		}
 
 		sun_position->setSunConditions( latitude, longitude, time );
 		DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();

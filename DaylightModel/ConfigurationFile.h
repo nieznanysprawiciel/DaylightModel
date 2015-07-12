@@ -1,4 +1,7 @@
 #pragma once
+/**@File ConfigurationFile.h
+@brief Zawiera prost¹ klasê do wczytywania plików konfiguracyjnych i pobierania
+otypowanych wartoœci.*/
 
 #include <string>
 #include <unordered_map>

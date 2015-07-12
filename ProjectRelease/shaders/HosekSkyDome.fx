@@ -64,6 +64,7 @@ PS_INPUT vertex_shader( VS_INPUT input )
     return output;
 }
 
+static const float sun_max_radius_multiplier = 1.6;
 
 //--------------------------------------------------------------------------------------
 // Pixel Shader
@@ -76,11 +77,14 @@ float3 pixel_shader( PS_INPUT input) : SV_Target
 	float3 weight = dither_mask[pixelPos.x][pixelPos.y].xxx;
 	weight = weight * float( 1.0 / 255 ).xxx;
 	
-    float3 resultColor = input.Color + weight;//(input.Color * weight);
-	
-	if( acos( dot( sun_direction, normalize( input.Dir ) ) ) < solar_radius )
+	float3 resultColor = input.Color + weight;//(input.Color * weight);
+
+	float angleFromCenter = acos( dot( sun_direction, normalize( input.Dir ) ) );
+	if( angleFromCenter < solar_radius * sun_max_radius_multiplier )
 	{
-		resultColor += sun_base_color;
+		float factor = smoothstep( 0.0, solar_radius * ( sun_max_radius_multiplier - 1.0 ), solar_radius * sun_max_radius_multiplier - angleFromCenter );
+			
+		resultColor += sun_base_color * factor;
 	}
 	return resultColor;
 }

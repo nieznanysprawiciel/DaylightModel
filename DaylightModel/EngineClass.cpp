@@ -235,14 +235,21 @@ void EngineClass::ReloadConfigurationFile()
 
 	rate = config_file.GetValue< float >( "rate" );
 
-	std::string newTime = config_file.GetValue< std::string >( "datetime" );
-	
-	std::tm convertedTime;
-	std::stringstream converter( newTime );
+	// Je¿eli ta zmienna jest ustawiona na false to czas nie jest nadpisywany czasem z pliku, ale kontynuowane jest
+	// obecne odliczanie.
+	bool updateDate = config_file.GetValue< bool >( "updatedate" );
 
-	converter >> std::get_time( &convertedTime, "%d.%m.%Y %H:%M:%S" );
-	time_t secondsTime = mktime( &convertedTime );
-	time = (double)secondsTime;
+	if( updateDate )
+	{
+		std::string newTime = config_file.GetValue< std::string >( "datetime" );
+
+		std::tm convertedTime;
+		std::stringstream converter( newTime );
+
+		converter >> std::get_time( &convertedTime, "%d.%m.%Y %H:%M:%S" );
+		time_t secondsTime = mktime( &convertedTime );
+		time = (double)secondsTime;
+	}
 }
 
 void EngineClass::updateSky()

@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfigurationFile.h" />
+    <ClInclude Include="HosekSkylightModel\HosekSkyModelSolarRadiance_RGB.h" />
+    <ClInclude Include="HosekSkylightModel\solarRadianceRGB.h" />
     <ClInclude Include="SWEngineFiles\ConstantBuffersFormat.h" />
     <ClInclude Include="DaylightModel.h" />
     <ClInclude Include="SWEngineFiles\DX11_interfaces_container.h" />
@@ -109,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigurationFile.cpp" />
+    <ClCompile Include="HosekSkylightModel\SolarRadiance_RGB.cpp" />
     <ClCompile Include="SWEngineFiles\BufferObject.cpp" />
     <ClCompile Include="DaylightModel.cpp" />
     <ClCompile Include="SWEngineFiles\DX11_interfaces_container.cpp" />

@@ -26,6 +26,9 @@ cbuffer ConstantPerMesh : register( b1 )
 cbuffer SkyDomeConstants : register( b2 )
 {
 	matrix dither_mask;
+	float4 sun_base_color;
+	float3 sun_direction;
+	float solar_radius;
 }
 
 
@@ -40,6 +43,7 @@ struct PS_INPUT
 {
     float4 Pos : SV_POSITION;
     float3 Color : COLOR;
+	float3 Dir	:	POSITION;
 };
 
 
@@ -55,6 +59,7 @@ PS_INPUT vertex_shader( VS_INPUT input )
     output.Pos = mul( input.Pos, World );
     output.Pos = mul( output.Pos, Projection );
     output.Color = input.Color;
+	output.Dir = (float3)input.Pos;
 	
     return output;
 }
@@ -71,5 +76,12 @@ float3 pixel_shader( PS_INPUT input) : SV_Target
 	float3 weight = dither_mask[pixelPos.x][pixelPos.y].xxx;
 	weight = weight * float( 1.0 / 255 ).xxx;
 	
-    return input.Color + weight;//(input.Color * weight);
+    float3 resultColor = input.Color + weight;//(input.Color * weight);
+	
+	if( acos( dot( sun_direction, normalize( input.Dir ) ) ) < solar_radius )
+	{
+		resultColor += sun_base_color;
+	}
+	return resultColor;
 }
+

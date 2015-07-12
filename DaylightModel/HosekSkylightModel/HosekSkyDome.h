@@ -21,6 +21,17 @@ struct SkyDomeVertex
 	DirectX::XMFLOAT3 color;		///<Kolor wierzcho³ka
 };
 
+struct SkyDomeConstants
+{
+	DirectX::XMFLOAT4X4		dither_mask;
+	//DirectX::XMFLOAT4		limb_darkening[7];
+	DirectX::XMFLOAT4		sun_base_color;
+	DirectX::XMFLOAT3		sun_direction;
+	float					solar_radius;
+	
+};
+
+
 /**@brief Klasa s³u¿y do wyœwietlania kopu³y nieba.
 
 Wierzcho³ki i indeksy s¹ zapisywane do buforów tylnych. Nastêpnie po zakoñczeniu generowania
@@ -30,13 +41,14 @@ Generowanie nieba jest zasadniczo procesem d³ugim i nie mo¿na go wykonywac w cza
 class HosekSkyDome : public SkyDome
 {
 private:
-	VERT_INDEX* back_ind_buffer;		///<Tylny bufor indeksów. 
-	SkyDomeVertex* back_vert_buffer;	///<Tylny bufor wierzcho³ków.
-	unsigned int vert_count;			///<Liczba wierzcho³ków w buforze wierzcho³ków
+	VERT_INDEX*				back_ind_buffer;		///<Tylny bufor indeksów. 
+	SkyDomeVertex*			back_vert_buffer;		///<Tylny bufor wierzcho³ków.
+	unsigned int			vert_count;				///<Liczba wierzcho³ków w buforze wierzcho³ków
 
-	HosekSkylightModel skylight_model;	///<Obiekt, który bêdzie podawa³ informacje o kolorach
+	HosekSkylightModel		skylight_model;			///<Obiekt, który bêdzie podawa³ informacje o kolorach
 
-	BufferObject*		constantBuffer;	///<Bufor sta³ych u¿ywanych do ditheringu.
+	BufferObject*			constantBuffer;			///<Bufor sta³ych u¿ywanych do ditheringu.
+	SkyDomeConstants		constantBufferData;
 
 	void generate_sphere(int vertical, int horizontal, float radius );
 public:

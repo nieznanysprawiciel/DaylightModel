@@ -94,6 +94,7 @@ an updated version of this code has been published!
 #include "..\stdafx.h"
 #include "HosekSkyModel.h"
 #include "ArHosekSkyModelData_RGB.h"
+#include "HosekSkyModelSolarRadiance_RGB.h"
 
 #ifndef MATH_PI 
 #define MATH_PI                     3.141592653589793
@@ -127,7 +128,10 @@ HosekSkylightModel::HosekSkylightModel()
 	sun_intensity = 1.0f;
 
 	for ( int i = 0; i < 3; ++i )
-		skymodel_state[i] = new ArHosekSkyModelState;
+	{
+		skymodel_state[ i ] = new ArHosekSkyModelState;
+		skymodel_state[ i ]->solar_radius = TERRESTRIAL_SOLAR_RADIUS;
+	}
 }
 
 
@@ -397,19 +401,46 @@ DirectX::XMVECTOR HosekSkylightModel::sky_radiance( float theta, float gamma )
 	return result;
 }
 
-/**@brief Zwraca kolor nieba w podanym punkcie uwzglêdniaj¹c
-bezpoœrednie promieniowanie docieraj¹ce od s³oñca. Innymi s³owy rysuje niebo razem ze 
-z³oñcem.
+/**@brief Zwraca kolor s³oñca z promieniowania docieraj¹cego bezpoœrednio.
+Nie uwzglêdnia efektu limb darkening.
 
-@param[in] theta K¹t miêdzy zenithem a kierunkiem patrzenia.
-@param[in] gamma K¹t miedzy s³oñcem a kierunkiem patrzenia.
+Wersja jest nieoptymalna i da siê osi¹gn¹æ o wiele wiêcej, ale to ju¿ zadanie na póŸniej.
+
 @return Wektor kolorów RGB.*/
-DirectX::XMFLOAT3 HosekSkylightModel::sky_solar_radiance( float theta, float gamma )
+DirectX::XMFLOAT4 HosekSkylightModel::sun_base_color()
 {
-	DirectX::XMFLOAT3 ret( 0.0, 0.0, 0.0 );
-	return ret;
-}
+	int     turb_low = (int)skymodel_state[ 0 ]->turbidity - 1;
+	double  turb_frac = skymodel_state[ 0 ]->turbidity - (double)(turb_low + 1);
 
+	if( turb_low == 9 )
+	{
+		turb_low = 8;
+		turb_frac = 1.0;
+	}
+
+	float direct_radiance[3];
+
+	for( unsigned int channel = 0; channel < 3; ++channel )
+	{
+		direct_radiance[channel] = static_cast<float>(
+			(1.0 - turb_frac) *
+			arhosekskymodel_sr_internalRGB(
+			skymodel_state[ channel ],
+			turb_low,
+			channel,
+			skymodel_state[ channel ]->elevation
+			)
+			+ turb_frac *
+			arhosekskymodel_sr_internalRGB(
+			skymodel_state[ channel ],
+			turb_low + 1,
+			channel,
+			skymodel_state[ channel ]->elevation
+			) );
+	}
+
+	return DirectX::XMFLOAT4( direct_radiance[ 0 ], direct_radiance[ 1 ], direct_radiance[ 2 ], 1.0f );
+}
 /*
 double arhosek_tristim_skymodel_radiance(
 	ArHosekSkyModelState  * state,

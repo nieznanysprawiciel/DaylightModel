@@ -80,6 +80,12 @@
     <ClInclude Include="ConfigurationFile.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="HosekSkylightModel\solarRadianceRGB.h">
+      <Filter>Source Files\HosekModelFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="HosekSkylightModel\HosekSkyModelSolarRadiance_RGB.h">
+      <Filter>Source Files\HosekModelFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -132,6 +138,9 @@
     </ClCompile>
     <ClCompile Include="ConfigurationFile.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HosekSkylightModel\SolarRadiance_RGB.cpp">
+      <Filter>Source Files\HosekModelFiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

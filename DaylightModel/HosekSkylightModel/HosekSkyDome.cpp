@@ -1,7 +1,6 @@
 #include "..\stdafx.h"
 #include "HosekSkyDome.h"
 
-
 using namespace DirectX;
 
 //#include "..\..\..\memory_leaks.h"
@@ -14,10 +13,6 @@ D3D11_INPUT_ELEMENT_DESC SkyDomeVertex_desc[] =
 };
 
 
-struct SkyDomeConstants
-{
-	DirectX::XMFLOAT4X4		dither_mask;
-};
 
 
 
@@ -95,11 +90,13 @@ void HosekSkyDome::init_sky_dome( XMVECTOR sun_direction,
 	set_material( &material, DEFAULT_MATERIAL_STRING );
 
 	//Tworzymy bufor sta³ych
-	SkyDomeConstants constantBufferData;
 	constantBufferData.dither_mask = DirectX::XMFLOAT4X4( 1.0 / 17.0, 14.0 / 17.0, 3.0 / 17.0, 11.0 / 17.0,
 														  13.0 / 17.0, 5.0 / 17.0, 15.0 / 17.0, 7.0 / 17.0,
 														  4.0 / 17.0, 12.0 / 17.0, 2.0 / 17.0, 10.0 / 17.0,
 														  16.0 / 17.0, 8.0 / 17.0, 9.0 / 17.0, 6.0 / 17.0 );
+	constantBufferData.solar_radius = skylight_model.get_solar_radius();
+	constantBufferData.sun_base_color = DirectX::XMFLOAT4( 1.0f, 1.0f, 1.0f, 1.0f );
+
 	constantBuffer = BufferObject::create_from_memory( &constantBufferData, sizeof( constantBufferData ), 1, D3D11_BIND_CONSTANT_BUFFER );
 	constant_buffer = constantBuffer->get();			///@todo Uwaga constantBuffer nie zostanie zwolniony.
 	// Tutaj wype³niamy kopu³ê kolorem
@@ -158,6 +155,9 @@ void HosekSkyDome::update_sky_dome( XMVECTOR sun_direction,
 
 		//back_vert_buffer[i].color = XMFLOAT3( 1.0f, 0.0f, 0.0f );	// Test
 	}
+
+	constantBufferData.sun_base_color = skylight_model.sun_base_color();
+	DirectX::XMStoreFloat3( &constantBufferData.sun_direction, sun_direction );
 
 	update_vertex_buffer = true;		// DisplayEngine zaktualizuje bufor
 }
@@ -270,5 +270,6 @@ Funkcja wirtualna, przeczytaj opis funkcji SkyDome::update_buffers.*/
 void HosekSkyDome::update_buffers( )
 {
 	device_context->UpdateSubresource( vertex_buffer->get(), 0, nullptr, back_vert_buffer, 0, 0 );
+	device_context->UpdateSubresource( constantBuffer->get(), 0, nullptr, &constantBufferData, 0, 0 );
 	update_vertex_buffer = false;
 }

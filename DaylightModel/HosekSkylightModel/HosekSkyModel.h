@@ -141,6 +141,8 @@ ArHosekSkyModelState;
 typedef double *ArHosekSkyModel_Dataset;
 typedef double *ArHosekSkyModel_Radiance_Dataset;
 
+#include "DirectXMath.h"
+
 /**@brief Klasa zawieraj¹ca funkcje do obs³ugi modelu nieba Hoseka i Wilkiego.
 
 Klasa jest przepisana na architekturê SSE, aby wykonywaæ instrukcje w jednostce wektorowej.
@@ -179,7 +181,8 @@ public:
 			   float sky_intens,
 			   float sun_intens);
 
-	DirectX::XMVECTOR sky_radiance( float theta, float gamma );
-	DirectX::XMFLOAT3 sky_solar_radiance( float theta, float gamma );
+	DirectX::XMVECTOR	sky_radiance( float theta, float gamma );
+	DirectX::XMFLOAT4	sun_base_color();
+	float				get_solar_radius() { return (float)skymodel_state[0]->solar_radius; }
 };
 

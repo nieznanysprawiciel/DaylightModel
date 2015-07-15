@@ -44,6 +44,7 @@ private:
 	double		turbidity;
 	float		sky_intensity;
 	float		sun_intensity;
+	tm			dateTime;
 	
 	void		ReloadConfigurationFile();
 	//

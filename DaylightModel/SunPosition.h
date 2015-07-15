@@ -19,8 +19,9 @@ public:
 	DirectX::XMVECTOR computeSunDirection();
 	double computeAzimuth();
 	double computeElevation();
+	double computeStandardMeridian( double longitude );
 
 	void setSunConditions( float latit, float longit, tm* time );
-	void setSunConditions( float latit, float longit, double time );
+	void setSunConditions( double time );
 };
 

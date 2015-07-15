@@ -97,7 +97,7 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 
 	//DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
-	sun_position->setSunConditions( DirectX::XMConvertToRadians( latitude ), DirectX::XMConvertToRadians( longitude ), time );
+	sun_position->setSunConditions( time );
 	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
 	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 10000, sky_intensity );
 
@@ -248,7 +248,10 @@ void EngineClass::ReloadConfigurationFile()
 
 		converter >> std::get_time( &convertedTime, "%d.%m.%Y %H:%M:%S" );
 		time_t secondsTime = mktime( &convertedTime );
-		time = (double)secondsTime;
+		time = (double)secondsTime / 3600;
+		dateTime = convertedTime;
+
+		sun_position->setSunConditions( latitude, longitude, &convertedTime );
 	}
 }
 
@@ -269,7 +272,7 @@ void EngineClass::updateSky()
 			config_needs_reload = false;	// Zaznaczamy, ¿e obs³u¿yliœmy.
 		}
 
-		sun_position->setSunConditions( latitude, longitude, time );
+		sun_position->setSunConditions( time );
 		DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
 		sky_dome->update_sky_dome( sun_dir, turbidity, albedo, sky_intensity );
 	}

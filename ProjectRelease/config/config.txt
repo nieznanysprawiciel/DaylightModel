@@ -1,9 +1,11 @@
-turbidity = 3.0
-latitude = 80
+turbidity = 1.0
+latitude = 30
 longitude = 0
-datetime = "15.07.2015 21:30:00"
+datetime = "15.07.1970 20:30:00"
 updatedate = 1
 albedoR = 0.8
 albedoG = 0.8
 albedoB = 0.8
 rate = 0.3
+verticalTesselation = 101
+horizontalTesselation = 101

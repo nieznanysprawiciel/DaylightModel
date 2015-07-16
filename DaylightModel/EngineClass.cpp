@@ -96,10 +96,22 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 	device_context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 
-	//DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
+	//
+	ID3D11RasterizerState* rasterizer_state;
+	D3D11_RASTERIZER_DESC disable_backfaceculling = get_rasterizer_desc();
+	disable_backfaceculling.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+	//disable_backfaceculling.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+	device->CreateRasterizerState( &disable_backfaceculling, &rasterizer_state );
+	device_context->RSSetState( rasterizer_state );
+	//
+
 	sun_position->setSunConditions( time );
 	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
-	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 10000, sky_intensity );
+
+	int domeVerticalTess = config_file.GetValue<int>( "verticalTesselation" );
+	int domeHorizontalTess = config_file.GetValue<int>( "horizontalTesselation" );
+
+	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, domeVerticalTess, domeHorizontalTess, 10, sky_intensity );
 
 	skyThread = std::thread( skyThreadFunction, this );
 
@@ -143,7 +155,7 @@ void EngineClass::render_frame()
 
 	// Wype³niamy bufor sta³ych
 	ConstantPerMesh shader_data_per_mesh;
-	shader_data_per_mesh.world_matrix = rotation_matrix;// XMMatrixTranspose( rotation_matrix );	// Transformacja wierzcho³ków
+	shader_data_per_mesh.world_matrix = XMMatrixTranspose( rotation_matrix );	// Transformacja wierzcho³ków
 	// Przepisujemy materia³
 	copy_material( &shader_data_per_mesh, model );
 
@@ -284,10 +296,22 @@ DirectX::XMMATRIX EngineClass::getRotationMatrix()
 	DirectX::XMVECTOR zenith = DirectX::XMVectorSet( 0.0, 1.0, 0.0, 0.0 );
 	DirectX::XMVECTOR right = DirectX::XMVectorSet( 1.0, 0.0, 0.0, 0.0 );
 	DirectX::XMVECTOR y_rotation = DirectX::XMQuaternionRotationNormal( zenith, horizontal_angle );
-	//right = DirectX::XMVector3Rotate( right, y_rotation );
+	DirectX::XMMATRIX y_rot_matrix = DirectX::XMMatrixRotationQuaternion( y_rotation );
+
+	//right = DirectX::XMVector4Transform( right, y_rot_matrix );
 	DirectX::XMVECTOR x_rotation = DirectX::XMQuaternionRotationAxis( right, vertical_angle );
-	return DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( x_rotation, y_rotation ) );
-	//return DirectX::XMMatrixRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0f );
+	DirectX::XMMATRIX x_rot_matrix = DirectX::XMMatrixRotationQuaternion( x_rotation );
+	
+	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation( 0.0, 0.0, 30.0 );
+	
+	//DirectX::XMMATRIX rotation = x_rot_matrix;
+	//DirectX::XMMATRIX rotation = y_rot_matrix;
+	//DirectX::XMMATRIX rotation = DirectX::XMMatrixMultiply( y_rot_matrix, x_rot_matrix );
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( y_rotation, x_rotation ) );
+	//DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0 ) );
+
+	return DirectX::XMMatrixMultiply( rotation, translation );
+	//return rotation;
 }
 
 

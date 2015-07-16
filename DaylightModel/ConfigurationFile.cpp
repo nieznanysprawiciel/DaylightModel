@@ -112,7 +112,7 @@ std::string ConfigurationFile::ParseNumericConstant( std::string& line, unsigned
 {
 	size_t lineSize = line.size();
 	unsigned int beginString = streamIdx;
-	while( streamIdx < lineSize && ( isdigit( line[ streamIdx ] ) || line[ streamIdx ] == '.' ) )
+	while( streamIdx < lineSize && ( isdigit( line[ streamIdx ] ) || line[ streamIdx ] == '.' ) || line[ streamIdx ] == '-' )
 		++streamIdx;
 
 	return std::string( line, beginString, streamIdx - beginString );

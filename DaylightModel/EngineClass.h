@@ -10,6 +10,8 @@
 //#include "GUIManager.h"
 #include "ConfigurationFile.h"
 
+#include "FPS_counter.h"
+
 class EngineClass : public DX11_constant_buffers_container
 {
 private:
@@ -30,6 +32,7 @@ private:
 
 	TimeManager				time_manager;
 	TimeManager				sky_time_manager;
+	FPS_counter				FPScounter;
 
 
 	// Modyfikuje jedynie w¹tek przeliczaj¹cy niebo

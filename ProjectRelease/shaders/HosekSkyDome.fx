@@ -87,5 +87,6 @@ float3 pixel_shader( PS_INPUT input) : SV_Target
 		resultColor += sun_base_color * factor;
 	}
 	return resultColor;
+	//return input.Color;
 }
 

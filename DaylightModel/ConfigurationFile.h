@@ -1,5 +1,5 @@
 #pragma once
-/**@File ConfigurationFile.h
+/**@file ConfigurationFile.h
 @brief Zawiera prost¹ klasê do wczytywania plików konfiguracyjnych i pobierania
 otypowanych wartoœci.*/
 

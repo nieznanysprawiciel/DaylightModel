@@ -86,6 +86,9 @@
     <ClInclude Include="HosekSkylightModel\HosekSkyModelSolarRadiance_RGB.h">
       <Filter>Source Files\HosekModelFiles</Filter>
     </ClInclude>
+    <ClInclude Include="FPS_counter.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -141,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="HosekSkylightModel\SolarRadiance_RGB.cpp">
       <Filter>Source Files\HosekModelFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS_counter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,16 +5,14 @@
 #include <ctime>
 
 
-
-
 extern unsigned int windowX;
 extern unsigned int windowY;
 
-//ID3D11Device* WINAPI DXUTGetD3D11Device() { return DX11_constant_buffers_container::device; }
-//ID3D11DeviceContext* WINAPI DXUTGetD3D11DeviceContext() { return DX11_constant_buffers_container::device_context; }
-//ID3D11RenderTargetView* WINAPI DXUTGetD3D11RenderTargetView() { return DX11_constant_buffers_container::render_target; }
-//ID3D11DepthStencilView* WINAPI DXUTGetD3D11DepthStencilView() { return DX11_constant_buffers_container::z_buffer_view; }
-//IDXGISwapChain* WINAPI DXUTGetDXGISwapChain() { return DX11_constant_buffers_container::swap_chain; }
+ID3D11Device* WINAPI DXUTGetD3D11Device() { return DX11_constant_buffers_container::device; }
+ID3D11DeviceContext* WINAPI DXUTGetD3D11DeviceContext() { return DX11_constant_buffers_container::device_context; }
+ID3D11RenderTargetView* WINAPI DXUTGetD3D11RenderTargetView() { return DX11_constant_buffers_container::render_target; }
+ID3D11DepthStencilView* WINAPI DXUTGetD3D11DepthStencilView() { return DX11_constant_buffers_container::z_buffer_view; }
+IDXGISwapChain* WINAPI DXUTGetDXGISwapChain() { return DX11_constant_buffers_container::swap_chain; }
 
 
 void skyThreadFunction( EngineClass* engine )
@@ -60,7 +58,6 @@ EngineClass::EngineClass()
 	sky_time_manager.initTimer();
 
 	ReloadConfigurationFile();
-	FPScounter.init(time_manager.getTimeSec());
 }
 
 void EngineClass::release()
@@ -99,22 +96,10 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 	device_context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 
-	//
-	ID3D11RasterizerState* rasterizer_state;
-	D3D11_RASTERIZER_DESC disable_backfaceculling = get_rasterizer_desc();
-	disable_backfaceculling.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
-	//disable_backfaceculling.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-	device->CreateRasterizerState( &disable_backfaceculling, &rasterizer_state );
-	device_context->RSSetState( rasterizer_state );
-	//
-
+	//DirectX::XMVECTOR sun_dir = DirectX::XMVectorSet( -0.2f, 0.6f, 0.6f, 1.0f );
 	sun_position->setSunConditions( time );
 	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
-
-	int domeVerticalTess = config_file.GetValue<int>( "verticalTesselation" );
-	int domeHorizontalTess = config_file.GetValue<int>( "horizontalTesselation" );
-
-	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, domeVerticalTess, domeHorizontalTess, 10, sky_intensity );
+	sky_dome->init_sky_dome( sun_dir, turbidity, albedo, 101, 101, 10000, sky_intensity );
 
 	skyThread = std::thread( skyThreadFunction, this );
 
@@ -130,9 +115,7 @@ void EngineClass::render_frame()
 	if ( !sky_dome )
 		return;
 
-	float timeElapsed = (float)time_manager.onStartRenderFrame();
-	double seconds = time_manager.getTimeSec();
-	FPScounter.count( seconds );
+	float timeElapsed = (float)time_manager.queryTimeFromBegin();
 
 	// Ustawiamy format wierzcho³ków i bufory sta³ych
 	device_context->IASetInputLayout( sky_dome->get_vertex_layout() );
@@ -160,7 +143,7 @@ void EngineClass::render_frame()
 
 	// Wype³niamy bufor sta³ych
 	ConstantPerMesh shader_data_per_mesh;
-	shader_data_per_mesh.world_matrix = XMMatrixTranspose( rotation_matrix );	// Transformacja wierzcho³ków
+	shader_data_per_mesh.world_matrix = rotation_matrix;// XMMatrixTranspose( rotation_matrix );	// Transformacja wierzcho³ków
 	// Przepisujemy materia³
 	copy_material( &shader_data_per_mesh, model );
 
@@ -301,22 +284,10 @@ DirectX::XMMATRIX EngineClass::getRotationMatrix()
 	DirectX::XMVECTOR zenith = DirectX::XMVectorSet( 0.0, 1.0, 0.0, 0.0 );
 	DirectX::XMVECTOR right = DirectX::XMVectorSet( 1.0, 0.0, 0.0, 0.0 );
 	DirectX::XMVECTOR y_rotation = DirectX::XMQuaternionRotationNormal( zenith, horizontal_angle );
-	//DirectX::XMMATRIX y_rot_matrix = DirectX::XMMatrixRotationQuaternion( y_rotation );
-
-	//right = DirectX::XMVector4Transform( right, y_rot_matrix );
+	//right = DirectX::XMVector3Rotate( right, y_rotation );
 	DirectX::XMVECTOR x_rotation = DirectX::XMQuaternionRotationAxis( right, vertical_angle );
-	//DirectX::XMMATRIX x_rot_matrix = DirectX::XMMatrixRotationQuaternion( x_rotation );
-	
-	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation( 0.0, 0.0, 30.0 );
-	
-	//DirectX::XMMATRIX rotation = x_rot_matrix;
-	//DirectX::XMMATRIX rotation = y_rot_matrix;
-	//DirectX::XMMATRIX rotation = DirectX::XMMatrixMultiply( y_rot_matrix, x_rot_matrix );
-	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( y_rotation, x_rotation ) );
-	//DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0 ) );
-
-	//return DirectX::XMMatrixMultiply( rotation, translation );
-	return rotation;
+	return DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( x_rotation, y_rotation ) );
+	//return DirectX::XMMatrixRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0f );
 }
 
 

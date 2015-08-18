@@ -21,7 +21,7 @@ public:
 	double computeElevation();
 	double computeStandardMeridian( double longitude );
 
-	void setSunConditions( float latit, float longit, tm* time );
+	double setSunConditions( float latit, float longit, tm* time );
 	void setSunConditions( double time );
 };
 

@@ -41,7 +41,7 @@ EngineClass::EngineClass()
 
 	latitude = 53.0f;
 	longitude = 0.0f;
-	time = 21420.0f;
+	time = 0.0f;
 
 	albedo[0] = 0.8;
 	albedo[1] = 0.8;
@@ -157,6 +157,8 @@ void EngineClass::render_frame()
 
 
 	XMMATRIX rotation_matrix = getRotationMatrix();
+	//XMMATRIX proj_matrix = DirectX::XMMatrixTranspose( XMLoadFloat4x4( &shader_data_per_frame.projection_matrix ) );
+	//rotation_matrix = XMMatrixMultiply( rotation_matrix, proj_matrix );
 
 	// Wype³niamy bufor sta³ych
 	ConstantPerMesh shader_data_per_mesh;
@@ -264,11 +266,12 @@ void EngineClass::ReloadConfigurationFile()
 		std::stringstream converter( newTime );
 
 		converter >> std::get_time( &convertedTime, "%d.%m.%Y %H:%M:%S" );
-		time_t secondsTime = mktime( &convertedTime );
-		time = (double)secondsTime / 3600;
-		dateTime = convertedTime;
+		//time_t secondsTime = mktime( &convertedTime );
+		//time = (double)secondsTime / 3600;
+		//time = fmod( time, 24.0 );
+		//dateTime = convertedTime;
 
-		sun_position->setSunConditions( latitude, longitude, &convertedTime );
+		time = sun_position->setSunConditions( latitude, longitude, &convertedTime );
 	}
 }
 
@@ -315,8 +318,8 @@ DirectX::XMMATRIX EngineClass::getRotationMatrix()
 	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( y_rotation, x_rotation ) );
 	//DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0 ) );
 
-	//return DirectX::XMMatrixMultiply( rotation, translation );
-	return rotation;
+	return DirectX::XMMatrixMultiply( rotation, translation );
+	//return rotation;
 }
 
 

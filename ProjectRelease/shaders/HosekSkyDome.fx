@@ -77,7 +77,7 @@ float3 pixel_shader( PS_INPUT input) : SV_Target
 	float3 weight = dither_mask[pixelPos.x][pixelPos.y].xxx;
 	weight = weight * float( 1.0 / 255 ).xxx;
 	
-	float3 resultColor = input.Color + weight;//(input.Color * weight);
+	float3 resultColor = input.Color + weight;
 
 	float angleFromCenter = acos( dot( sun_direction, normalize( input.Dir ) ) );
 	if( angleFromCenter < solar_radius * sun_max_radius_multiplier )

@@ -1,7 +1,7 @@
-turbidity = 4.0
-latitude = 52
-longitude = 21
-datetime = "18.08.2015 19:57:00"
+turbidity = 2.0
+latitude = 80.0
+longitude = 21.0
+datetime = "18.08.2015 10:57:00"
 updatedate = 1
 albedoR = 0.8
 albedoG = 0.8
@@ -9,3 +9,5 @@ albedoB = 0.8
 rate = 0.3
 verticalTesselation = 101
 horizontalTesselation = 101
+skyIntensity = 5.0
+sunIntensity = 5.0

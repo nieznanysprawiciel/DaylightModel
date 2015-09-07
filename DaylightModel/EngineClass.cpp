@@ -99,14 +99,14 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 	device_context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	//D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 
-	//
-	ID3D11RasterizerState* rasterizer_state;
-	D3D11_RASTERIZER_DESC disable_backfaceculling = get_rasterizer_desc();
-	disable_backfaceculling.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
-	//disable_backfaceculling.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
-	device->CreateRasterizerState( &disable_backfaceculling, &rasterizer_state );
-	device_context->RSSetState( rasterizer_state );
-	//
+	////
+	//ID3D11RasterizerState* rasterizer_state;
+	//D3D11_RASTERIZER_DESC disable_backfaceculling = get_rasterizer_desc();
+	//disable_backfaceculling.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+	////disable_backfaceculling.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+	//device->CreateRasterizerState( &disable_backfaceculling, &rasterizer_state );
+	//device_context->RSSetState( rasterizer_state );
+	////
 
 	sun_position->setSunConditions( time );
 	DirectX::XMVECTOR sun_dir = sun_position->computeSunDirection();
@@ -252,6 +252,9 @@ void EngineClass::ReloadConfigurationFile()
 	albedo[ 1 ] = config_file.GetValue< float >( "albedoG" );
 	albedo[ 2 ] = config_file.GetValue< float >( "albedoB" );
 
+	sky_intensity = config_file.GetValue<float>( "skyIntensity" );
+	sun_intensity = config_file.GetValue<float>( "sunIntensity" );
+
 	rate = config_file.GetValue< float >( "rate" );
 
 	// Je¿eli ta zmienna jest ustawiona na false to czas nie jest nadpisywany czasem z pliku, ale kontynuowane jest
@@ -318,8 +321,8 @@ DirectX::XMMATRIX EngineClass::getRotationMatrix()
 	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionMultiply( y_rotation, x_rotation ) );
 	//DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion( DirectX::XMQuaternionRotationRollPitchYaw( vertical_angle, horizontal_angle, 0.0 ) );
 
-	return DirectX::XMMatrixMultiply( rotation, translation );
-	//return rotation;
+	//return DirectX::XMMatrixMultiply( rotation, translation );
+	return rotation;
 }
 
 

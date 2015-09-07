@@ -1,0 +1,26 @@
+Plik konfiguracyjny zawiera podstawowe parametry nieba, które mo¿na modyfikowaæ.
+
+Prawie wszystkie parametry mog¹ byæ wczytane w trakcie dzia³ania programu po wciœniêciu spacji.
+Wyj¹tkiem s¹ verticalTesselation i horizontalTesselation. Geometria jest budowana raz na pocz¹tku
+i nie zostaje ju¿ póŸniej przebudowana.
+
+
+
+
+turbidity				- Mglistoœæ atmosfery.
+latitude				- Szerokoœæ geograficzna obserwatora, wp³ywa na maksymaln¹ wysokoœæ S³oñca i czas trwania dnia.
+longitude				- D³ugoœæ geograficzna obserwatora.
+datetime				- Data i godzina, dla której rozpocznie siê animacja. Poprawny format - "18.08.2015 09:57:00"
+updatedate				- Je¿eli ta wartoœæ zostanie ustawiona na 0, to czas i data nie bêd¹ aktualizowane. Jest to przydatne
+							gdy chcemy obserwowaæ jedynie zmiany parametrów nieba w czasie trwaj¹cej animacji.
+							Je¿eli wartoœæ jest ustawiona na 1, to animacja po wciœniêciu spacji zaczyna siê od daty i godziny podanej
+							w polu updatedate.
+albedoR					- Albedo dla kana³u czerwonego.
+albedoG					- Albedo dla kana³u zielonego.
+albedoB					- Albedo dla kana³u niebieskiego.
+rate					- Szybkoœc animacji nieba. Wartoœæ 1.0 oznacza, ¿e w ci¹gu sekundy dzia³ania aplikacji up³ywa godzina
+							animacji nieba.
+verticalTesselation		- Gêstoœæ siatki kopu³y nieba w pionie.
+horizontalTesselation	- Gêstoœæ siatki kopu³y nieba w poziomie.
+skyIntensity			- Intensywnoœæ nieba.
+sunIntensity			- Intensywnoœæ S³oñca.

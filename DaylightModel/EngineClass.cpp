@@ -3,19 +3,14 @@
 #include <thread>
 #include <iomanip>
 #include <ctime>
-
+#include "SWEngineFiles/PerformanceCheck.h"
 
 
 
 extern unsigned int windowX;
 extern unsigned int windowY;
 
-//ID3D11Device* WINAPI DXUTGetD3D11Device() { return DX11_constant_buffers_container::device; }
-//ID3D11DeviceContext* WINAPI DXUTGetD3D11DeviceContext() { return DX11_constant_buffers_container::device_context; }
-//ID3D11RenderTargetView* WINAPI DXUTGetD3D11RenderTargetView() { return DX11_constant_buffers_container::render_target; }
-//ID3D11DepthStencilView* WINAPI DXUTGetD3D11DepthStencilView() { return DX11_constant_buffers_container::z_buffer_view; }
-//IDXGISwapChain* WINAPI DXUTGetDXGISwapChain() { return DX11_constant_buffers_container::swap_chain; }
-
+USE_PERFORMANCE_CHECK( SKYBOX_RENDERING )
 
 void skyThreadFunction( EngineClass* engine )
 {
@@ -81,6 +76,8 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 {
 	DX11_INIT_RESULT result;
 
+	REGISTER_PERFORMANCE_TASK( SKYBOX_RENDERING )
+
 	std::wstring shader_file = L"shaders/HosekSkyDome.fx";
 	std::string pixel_shader_name = "pixel_shader";
 	std::string vertex_shader_name = "vertex_shader";
@@ -125,6 +122,8 @@ DX11_INIT_RESULT EngineClass::init_all( HWND window, unsigned int width, unsigne
 
 void EngineClass::render_frame()
 {
+	START_PERFORMANCE_CHECK( SKYBOX_RENDERING )
+
 	begin_scene();
 
 	if ( !sky_dome )
@@ -195,6 +194,8 @@ void EngineClass::render_frame()
 
 	//guiManager.RenderGUI( timeElapsed );
 
+	END_PERFORMANCE_CHECK( SKYBOX_RENDERING )
+
 	end_scene_and_present();
 }
 
@@ -234,6 +235,8 @@ void EngineClass::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 	{
 		if( wParam == VK_SPACE )
 			config_needs_reload = true;
+		else if( wParam == VK_F1 )
+			PRINT_STATISTICS( "Performance.txt" )
 	}
 	else if( uMsg == WM_QUIT )
 		endThread = true;

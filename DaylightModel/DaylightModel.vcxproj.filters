@@ -89,6 +89,9 @@
     <ClInclude Include="FPS_counter.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SWEngineFiles\PerformanceCheck.h">
+      <Filter>Source Files\SWEngineFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -147,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="FPS_counter.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SWEngineFiles\PerformanceCheck.cpp">
+      <Filter>Source Files\SWEngineFiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

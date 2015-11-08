@@ -91,7 +91,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PERFORMANCE_CHECK;WIN32;_DEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -123,7 +123,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PERFORMANCE_CHECK;WIN32;NDEBUG;_WINDOWS;__UNUSED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -172,6 +172,7 @@
     <ClInclude Include="SWEngineFiles\ModelsManager.h" />
     <ClInclude Include="SWEngineFiles\ObjectDeleter.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SWEngineFiles\PerformanceCheck.h" />
     <ClInclude Include="SWEngineFiles\ResourceContainer.h" />
     <ClInclude Include="SWEngineFiles\SkyDome.h" />
     <ClInclude Include="stdafx.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="SWEngineFiles\MeshPartObject.cpp" />
     <ClCompile Include="SWEngineFiles\Model3DFromFile.cpp" />
     <ClCompile Include="SWEngineFiles\ModelsManager.cpp" />
+    <ClCompile Include="SWEngineFiles\PerformanceCheck.cpp" />
     <ClCompile Include="SWEngineFiles\PixelShaderObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

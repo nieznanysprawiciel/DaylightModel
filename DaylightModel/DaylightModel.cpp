@@ -120,22 +120,23 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
+	RECT windowRect = { 0, 0, windowX, windowY };
+    AdjustWindowRect( &windowRect, WS_OVERLAPPEDWINDOW, TRUE );
 
+	hInst = hInstance; // Store instance handle in our global variable
 
-   hInst = hInstance; // Store instance handle in our global variable
+	hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+						CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, NULL, NULL, hInstance, NULL );
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-						CW_USEDEFAULT, 0, windowX, windowY, NULL, NULL, hInstance, NULL );
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
-
-   return TRUE;
+	return TRUE;
 }
 
 //
